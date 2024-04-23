@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user.route.js");
+const authRoutes = require("./routes/auth.route.js");
 require("dotenv").config();
 
 const databaseUrl = process.env.DATABASEURL;
@@ -25,5 +26,8 @@ const connectToDatabase = async (databaseUrl) => {
 
 connectToDatabase(databaseUrl);
 
+app.use(express.json());
+
 //routes
 app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
