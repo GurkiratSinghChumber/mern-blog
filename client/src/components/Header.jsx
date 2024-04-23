@@ -10,7 +10,7 @@ export default function Header() {
       <div>
           <Navbar className='border-b-2'>
               <Link to={"/"} className='self-center whitespace-nowrap text-sm sm:text-xl dark:text-white font-semibold my-2'>
-                  <span className='px-2 py-1 pb-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>MernStack</span> Blog
+                  <span className='px-2 py-1 pb-2 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white'>MernStack</span>Blog
               </Link>
 
               <form >
@@ -26,7 +26,7 @@ export default function Header() {
                   </Button>
                   
                   <Link to="/sign-in">
-                      <Button className='bg-gradient-to-r from-indigo-800 to-purple-600'>Sign In</Button>
+                      <Button className='bg-gradient-to-r from-indigo-800 to-purple-600' outline>Sign In</Button>
                   </Link>
 
                   <Navbar.Toggle>
