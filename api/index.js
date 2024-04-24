@@ -26,7 +26,18 @@ const connectToDatabase = async (databaseUrl) => {
 
 connectToDatabase(databaseUrl);
 
+//for fetching the json post reqests
 app.use(express.json());
+
+// for handling errors
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal server error";
+
+  res
+    .status(statusCode)
+    .json({ success: false, statusCode: statusCode, message: message });
+});
 
 //routes
 app.use("/api/user", userRoutes);
