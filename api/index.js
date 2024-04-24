@@ -29,6 +29,10 @@ connectToDatabase(databaseUrl);
 //for fetching the json post reqests
 app.use(express.json());
 
+//routes
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
+
 // for handling errors
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
@@ -38,7 +42,3 @@ app.use((err, req, res, next) => {
     .status(statusCode)
     .json({ success: false, statusCode: statusCode, message: message });
 });
-
-//routes
-app.use("/api/user", userRoutes);
-app.use("/api/auth", authRoutes);

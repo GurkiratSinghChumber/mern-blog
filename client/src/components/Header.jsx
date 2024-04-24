@@ -2,7 +2,6 @@ import { Button, Navbar, TextInput } from "flowbite-react";
 import { CiSearch } from "react-icons/ci";
 import { FaMoon } from "react-icons/fa";
 import { IoSearch } from "react-icons/io5";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { Link, useLocation } from "react-router-dom";
 export default function Header() {
     const path = useLocation().pathname;
@@ -30,9 +29,6 @@ export default function Header() {
                   </Link>
 
                   <Navbar.Toggle>
-                      <Button>
-                          <RxHamburgerMenu />
-                      </Button>
                   </Navbar.Toggle>
               </div>
               
@@ -48,8 +44,7 @@ export default function Header() {
                     <Navbar.Link active={path === '/projects'} as={'div'}>
                         <Link to="/projects">Projects</Link>
                     </Navbar.Link>
-              </Navbar.Collapse>
-              
+              </Navbar.Collapse> 
           </Navbar>
 
           

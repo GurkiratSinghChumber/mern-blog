@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
     "flowbite-react": "^0.9.0",
+    "gsap": "^3.12.5",
     "react": "^18.2.0",
+    "react-awesome-reveal": "^4.2.8",
     "react-dom": "^18.2.0",
     "react-icon": "^1.0.0",
     "react-router-dom": "^6.22.3"
