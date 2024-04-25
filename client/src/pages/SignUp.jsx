@@ -66,11 +66,11 @@ export default function SignUp() {
             </div>
             <div >
               <Label value={'Your Email'}></Label>
-              <TextInput type="email" placeholder="Email" id="email" onChange={handleChange}></TextInput>
+              <TextInput type="email" placeholder="Example@mail.com" id="email" onChange={handleChange}></TextInput>
             </div>
             <div >
               <Label value={'Your Password'}></Label>
-              <TextInput type="password" placeholder="Password" id="password" onChange={handleChange}></TextInput>
+              <TextInput type="password" placeholder="********" id="password" onChange={handleChange}></TextInput>
             </div>
 
             <Button gradientDuoTone='purpleToPink' type='submit' disabled={loading}>
@@ -78,8 +78,8 @@ export default function SignUp() {
             </Button>
           </form>
           <div className='flex gap-2 text-sm mt-5'>
-            <span>Have an Account ? </span>
-            <Link to={'sign-in'} className='text-blue-500'>
+            <span>Dont Have an Account ? </span>
+            <Link to={'/sign-in'} className='text-blue-500'>
               Sign In
             </Link>
           </div>
