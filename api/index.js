@@ -3,13 +3,14 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user.route.js");
 const authRoutes = require("./routes/auth.route.js");
+const cors = require("cors");
 require("dotenv").config();
 
 const databaseUrl = process.env.DATABASEURL;
 const port = process.env.PORT;
 
 const app = express();
-
+app.use(cors());
 //connection to database
 const connectToDatabase = async (databaseUrl) => {
   try {
