@@ -1,12 +1,15 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react';
 import { useState } from 'react';
 import { Slide } from "react-awesome-reveal";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { signInFaliure, signInStart, signInSuccess } from '../redux/user/userSlice';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { loading, error: errorMessage } = useSelector(state => state.user);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -16,11 +19,10 @@ export default function SignIn() {
   const handleSubmit = async (e) => { 
     e.preventDefault();
     if ( !formData.email || !formData.password) { 
-      return setErrorMessage('All fields are required!!!');
+      return dispatch(signInFaliure('All fields are required!!!'));
     } 
     try {
-      setLoading(true);
-      setErrorMessage(null);
+      dispatch(signInStart());
       const res = await fetch('api/auth/sign-in', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -29,16 +31,15 @@ export default function SignIn() {
       
       const data = await res.json();
       if (data.success === false) { 
-        setLoading(false);
-        return setErrorMessage(data.message)
+        return dispatch(signInFaliure(data.message))
       }
-      setLoading(false);
+      
       if (res.ok) { 
+        dispatch(signInSuccess(data))
         navigate('/');
       }
     } catch (error) { 
-      setErrorMessage(error.message);
-      setLoading(false);
+      dispatch(signInFaliure(error.message))
     }
   }
 
