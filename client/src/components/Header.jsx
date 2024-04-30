@@ -19,7 +19,7 @@ export default function Header() {
                 <IoSearch ></IoSearch>
               </Button>
               
-              <div className='flex space-x-3 md:order-1'>
+              <div className='flex space-x-3 md:order-2'>
                   <Button className="w-12 h-10 hidden sm:inline" color="gray" pill>
                       <FaMoon></FaMoon>
                   </Button>
