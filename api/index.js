@@ -1,9 +1,10 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user.route.js");
 const authRoutes = require("./routes/auth.route.js");
 const cors = require("cors");
+
 require("dotenv").config();
 
 const databaseUrl = process.env.DATABASEURL;
@@ -11,6 +12,7 @@ const port = process.env.PORT;
 
 const app = express();
 app.use(cors());
+app.use(cookieParser());
 //connection to database
 const connectToDatabase = async (databaseUrl) => {
   try {
