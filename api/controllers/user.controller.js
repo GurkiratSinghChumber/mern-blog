@@ -77,4 +77,15 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-module.exports = { test, updateUser, deleteUser };
+const signOut = (req, res, next) => {
+  try {
+    res
+      .clearCookie("access_token")
+      .status(200)
+      .json("User has been Logged out");
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { test, updateUser, deleteUser, signOut };
