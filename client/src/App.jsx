@@ -5,10 +5,12 @@ import Home from "./pages/Home";
 import Project from "./pages/Project";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import CreatePost from "./pages/CreatePost";
 
 import Footer from "./components/FooterCom";
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
+import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 ("use client");
 
 export default function App() {
@@ -22,7 +24,12 @@ export default function App() {
           <Route element={<PrivateRoute></PrivateRoute>}>
             <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
           </Route>
-
+          <Route element={<OnlyAdminPrivateRoute></OnlyAdminPrivateRoute>}>
+            <Route
+              path="/create-post"
+              element={<CreatePost></CreatePost>}
+            ></Route>
+          </Route>
           <Route path="/project" element={<Project></Project>}></Route>
           <Route path="/sign-in" element={<SignIn></SignIn>}></Route>
           <Route path="/sign-up" element={<SignUp></SignUp>}></Route>

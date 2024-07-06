@@ -10,6 +10,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import app from "../firebase";
 import {
   deleteUserFailure,
@@ -22,7 +23,7 @@ import {
 } from "../redux/user/userSlice";
 
 export default function DashProfile({ handleSignOut }) {
-  const { currentUser, error } = useSelector((state) => state.user);
+  const { currentUser, error, loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState("");
   const [imageUploadProgress, setImageUploadProgress] = useState(0);
@@ -207,10 +208,23 @@ export default function DashProfile({ handleSignOut }) {
           type="submit"
           gradientDuoTone="purpleToBlue"
           outline
-          disabled={imageUploadProgress && imageUploadProgress < 100}
+          disabled={
+            (imageUploadProgress && imageUploadProgress < 100) || loading
+          }
         >
-          Update
+          {loading ? "Loading...." : "Update"}
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={"/create-post"}>
+            <Button
+              type="button"
+              gradientDuoTone="purpleToPink"
+              className=" w-full"
+            >
+              Create Post
+            </Button>
+          </Link>
+        )}
       </form>
 
       <div className="text-red-500 flex justify-between mt-5">
