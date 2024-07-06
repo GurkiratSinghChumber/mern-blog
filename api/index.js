@@ -3,6 +3,7 @@ const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/user.route.js");
 const authRoutes = require("./routes/auth.route.js");
+const postRoutes = require("./routes/post.route.js");
 const cors = require("cors");
 
 require("dotenv").config();
@@ -35,6 +36,7 @@ app.use(express.json());
 //routes
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/post", postRoutes);
 
 // for handling errors
 app.use((err, req, res, next) => {
