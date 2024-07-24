@@ -8,7 +8,6 @@ const verifyToken = (req, res, next) => {
   }
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
-      console.log(process.env.JWT_SECRET);
       return next(errorHandler(401, "Unauthorized2"));
     }
     req.user = user;

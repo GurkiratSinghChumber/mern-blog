@@ -1,19 +1,28 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import About from "./pages/About";
+import CreatePost from "./pages/CreatePost";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import Project from "./pages/Project";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import CreatePost from "./pages/CreatePost";
 
 import Footer from "./components/FooterCom";
 import Header from "./components/Header";
-import PrivateRoute from "./components/PrivateRoute";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 ("use client");
 
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { signOutSuccess } from "./redux/user/userSlice";
+import { checkAuth } from "./utils/VarifyToken";
+
 export default function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    checkAuth(dispatch, signOutSuccess);
+  });
   return (
     <div>
       <BrowserRouter>
