@@ -7,12 +7,31 @@ import { useSelector } from "react-redux";
 export default function DashPost() {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
-  console.log(userPosts);
+  const [showMore, setShowMore] = useState(true);
+
   useEffect(() => {
     if (currentUser.isAdmin) {
       fetchData();
     }
-  }, [currentUser._id]);
+  }, [currentUser.isAdmin]);
+
+  const handleShowMore = async () => {
+    try {
+      const res = await fetch(
+        `api/post/getposts?startIndex=${userPosts.length}`,
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setUserPosts((prev) => [...prev, ...data.posts]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchData = async () => {
     try {
@@ -23,6 +42,9 @@ export default function DashPost() {
       const data = await res.json();
       if (res.ok) {
         setUserPosts(data.posts);
+        if (data.posts.length < 9) {
+          setShowMore(false);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -87,6 +109,14 @@ export default function DashPost() {
               ))}
             </Table.Body>
           </Table>
+          {showMore && (
+            <button
+              onClick={handleShowMore}
+              className="w-full text-teal-500 self-center text-sm py-7"
+            >
+              Show More
+            </button>
+          )}
         </>
       ) : (
         <p>You have no Posts</p>

@@ -22,7 +22,7 @@ export default function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     checkAuth(dispatch, signOutSuccess);
-  });
+  }, []);
   return (
     <div>
       <BrowserRouter>

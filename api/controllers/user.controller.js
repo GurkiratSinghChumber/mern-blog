@@ -3,7 +3,7 @@ const bcryptjs = require("bcryptjs");
 const User = require("../modles/user.model.js");
 
 const test = (req, res) => {
-  res.json({ message: "Api is working" });
+  res.json({ message: "User signed in" });
 };
 const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.userId) {
