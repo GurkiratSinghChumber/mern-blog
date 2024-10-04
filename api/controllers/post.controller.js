@@ -85,4 +85,26 @@ const deletePost = async (req, res, next) => {
   }
 };
 
-module.exports = { create, getPost, deletePost };
+const updatePost = async (req, res, next) => {
+  const { content, title, image, category } = req.body;
+  if (!req.user.isAdmin || req.params.userId !== req.user.id) {
+    next(errorHandler(403, "You are not Authorized to update the post"));
+  }
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        content,
+        title,
+        image,
+        category,
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { create, getPost, deletePost, updatePost };

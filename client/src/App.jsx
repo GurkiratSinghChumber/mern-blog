@@ -15,6 +15,7 @@ import PrivateRoute from "./components/PrivateRoute";
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import Edit from "./pages/Edit";
 import { signOutSuccess } from "./redux/user/userSlice";
 import { checkAuth } from "./utils/VarifyToken";
 
@@ -38,6 +39,7 @@ export default function App() {
               path="/create-post"
               element={<CreatePost></CreatePost>}
             ></Route>
+            <Route path="/update-post/:postId" element={<Edit></Edit>}></Route>
           </Route>
           <Route path="/project" element={<Project></Project>}></Route>
           <Route path="/sign-in" element={<SignIn></SignIn>}></Route>

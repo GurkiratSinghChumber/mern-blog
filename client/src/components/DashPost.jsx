@@ -63,7 +63,10 @@ export default function DashPost() {
         headers: { "Content-Type": "application/json" },
       });
       if (res.ok) {
-        fetchData();
+        setUserPosts((prev) =>
+          prev.filter((post) => post._id !== postDeleteId)
+        );
+        setPostDeleteId("");
       }
     } catch (error) {
       console.log(error);
