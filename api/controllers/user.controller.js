@@ -95,7 +95,7 @@ const getUsers = async (req, res, next) => {
 
   try {
     const startIndex = parseInt(req.query.startIndex) || 0;
-    const limit = parseInt(req.query.limit) || 0;
+    const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.sort === "asc" ? 1 : -1;
     const users = await User.find()
       .sort({ createdAt: sortDirection })
@@ -108,7 +108,7 @@ const getUsers = async (req, res, next) => {
     const now = new Date();
 
     const oneMonthAgo = new Date(
-      now.getFullYear,
+      now.getFullYear(),
       now.getMonth() - 1,
       now.getDate()
     );
@@ -123,4 +123,29 @@ const getUsers = async (req, res, next) => {
     next(error);
   }
 };
-module.exports = { test, updateUser, deleteUser, signOut, getUsers };
+const deleteOtherUser = async (req, res, next) => {
+  console.log("hi");
+
+  if (req.user.id !== req.params.AdminId || !req.user.isAdmin) {
+    return next(
+      errorHandler(403, "You are not allowed to delete This account")
+    );
+  }
+  try {
+    await User.findByIdAndDelete(req.params.userDeleteId);
+    res.status(200).json({ message: "User has been deleted" });
+  } catch (error) {
+    console.log(error);
+
+    next(error);
+  }
+};
+
+module.exports = {
+  test,
+  updateUser,
+  deleteUser,
+  signOut,
+  getUsers,
+  deleteOtherUser,
+};

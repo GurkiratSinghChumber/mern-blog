@@ -5,6 +5,7 @@ import DashProfile from "../components/DashProfile";
 import DashSidebar from "../components/DashSidebar";
 
 import { handleSignOut } from "../utils/SignOutFunction";
+import DashUsers from "../components/DashUsers";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -30,6 +31,8 @@ export default function Dashboard() {
       )}
 
       {tab === "post" && <DashPost></DashPost>}
+
+      {tab == "users" && <DashUsers></DashUsers>}
     </div>
   );
 }
