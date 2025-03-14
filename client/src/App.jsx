@@ -11,11 +11,13 @@ import Footer from "./components/FooterCom";
 import Header from "./components/Header";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
 import PrivateRoute from "./components/PrivateRoute";
+import ScrollToTop from "./components/ScrollToTop";
 ("use client");
 
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Edit from "./pages/Edit";
+import PostPage from "./pages/PostPage";
 import { signOutSuccess } from "./redux/user/userSlice";
 import { checkAuth } from "./utils/VarifyToken";
 
@@ -23,10 +25,11 @@ export default function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     checkAuth(dispatch, signOutSuccess);
-  }, []);
+  }, [dispatch]);
   return (
     <div>
       <BrowserRouter>
+        <ScrollToTop></ScrollToTop>
         <Header></Header>
         <Routes>
           <Route path="/" element={<Home></Home>}></Route>
@@ -44,6 +47,7 @@ export default function App() {
           <Route path="/project" element={<Project></Project>}></Route>
           <Route path="/sign-in" element={<SignIn></SignIn>}></Route>
           <Route path="/sign-up" element={<SignUp></SignUp>}></Route>
+          <Route path="/post/:slug" element={<PostPage></PostPage>}></Route>
         </Routes>
         <Footer></Footer>
       </BrowserRouter>

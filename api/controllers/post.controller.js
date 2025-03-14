@@ -8,11 +8,13 @@ const create = async (req, res, next) => {
   if (!req.body.title || !req.body.content) {
     return next(errorHandler(400, "Please provide all required fields"));
   }
-  const slug = req.body.title
-    .split(" ")
-    .join("-")
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9-]/g, "");
+  const documents = await Post.countDocuments();
+  const slug =
+    req.body.title
+      .split(" ")
+      .join("-")
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9-]/g, "") + documents;
 
   const newPost = new Post({
     ...req.body,
@@ -21,7 +23,8 @@ const create = async (req, res, next) => {
   });
   try {
     const savedPost = await newPost.save();
-    res.status(201).json(savedPost);
+    const populatedPost = await Post.findById(savedPost._id).populate("userId");
+    res.status(201).json(populatedPost);
   } catch (error) {
     next(error);
   }

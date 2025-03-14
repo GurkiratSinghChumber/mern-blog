@@ -124,8 +124,6 @@ const getUsers = async (req, res, next) => {
   }
 };
 const deleteOtherUser = async (req, res, next) => {
-  console.log("hi");
-
   if (req.user.id !== req.params.AdminId || !req.user.isAdmin) {
     return next(
       errorHandler(403, "You are not allowed to delete This account")
@@ -140,6 +138,20 @@ const deleteOtherUser = async (req, res, next) => {
     next(error);
   }
 };
+const getUser = async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findById(userId).select("-password");
+
+    if (!user) {
+      return next(errorHandler(404, "User not found"));
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
 
 module.exports = {
   test,
@@ -148,4 +160,5 @@ module.exports = {
   signOut,
   getUsers,
   deleteOtherUser,
+  getUser,
 };
