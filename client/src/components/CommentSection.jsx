@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Comment from "./Comments";
 
-import { Alert, Button, Textarea } from "flowbite-react";
+import { Alert, Button, Modal, Textarea } from "flowbite-react";
 export default function CommentSection({ postId }) {
   const currentUser = useSelector((state) => state.user.currentUser);
-
+  const [deleteCommentId, setDeleteCommentId] = useState("");
   const [comment, setComment] = useState("");
   const [commentError, setCommentError] = useState("");
   const [comments, setComments] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  //comment submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -37,6 +41,7 @@ export default function CommentSection({ postId }) {
     }
   };
 
+  // getting all the comments
   useEffect(() => {
     const getComments = async () => {
       try {
@@ -51,6 +56,79 @@ export default function CommentSection({ postId }) {
     };
     getComments();
   }, [postId]);
+
+  // handling like
+  const handleLikeClick = async (comment) => {
+    try {
+      const res = await fetch(`/api/comment/addLike/${comment._id}`, {
+        method: "PUT",
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setComments((prev) =>
+          prev.map((comment) => {
+            if (comment._id === data._id) {
+              return {
+                ...comment,
+                likes: data.likes,
+                numberOfLikes: data.numberOfLikes,
+              };
+            } else {
+              return comment;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // handling Edit
+  const handleEdit = async (comment, editedContent) => {
+    try {
+      const res = await fetch(`/api/comment/editComment/${comment._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content: editedContent }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setComments((prev) =>
+          prev.map((comment) => {
+            if (comment._id === data._id) {
+              return {
+                ...comment,
+                content: data.content,
+              };
+            } else {
+              return comment;
+            }
+          })
+        );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  //handle Delete
+  const handleDelete = async (deleteCommentId) => {
+    try {
+      const res = await fetch(`/api/comment/deleteComment/${deleteCommentId}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setComments((prev) => prev.filter((c) => c._id !== deleteCommentId));
+      }
+      setDeleteCommentId("");
+      setShowModal(false);
+    } catch (error) {
+      setShowModal(false);
+      setDeleteCommentId("");
+      console.log(error);
+    }
+  };
   return (
     <div className="max-w-2xl mx-auto w-full p-3">
       {currentUser ? (
@@ -118,10 +196,46 @@ export default function CommentSection({ postId }) {
             </div>
           </div>
           {comments.map((comment) => (
-            <Comment key={comment._id} comment={comment}></Comment>
+            <Comment
+              key={comment._id}
+              comment={comment}
+              onLike={handleLikeClick}
+              currentUser={currentUser}
+              onEdit={handleEdit}
+              setShowModal={setShowModal}
+              setDeleteCommentId={setDeleteCommentId}
+            ></Comment>
           ))}
         </>
       )}
+
+      <Modal
+        show={showModal}
+        size="md"
+        onClose={() => setShowModal(false)}
+        popup
+      >
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to delete this product?
+            </h3>
+            <div className="flex justify-center gap-4">
+              <Button
+                color="failure"
+                onClick={() => handleDelete(deleteCommentId)}
+              >
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color="gray" onClick={() => setShowModal(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
   );
 }

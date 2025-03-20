@@ -11,6 +11,7 @@ const verifyToken = (req, res, next) => {
       return next(errorHandler(401, "Unauthorized2"));
     }
     req.user = user;
+
     next();
   });
 };

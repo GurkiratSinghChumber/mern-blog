@@ -1,6 +1,5 @@
-const { timeStamp } = require("console");
 const mongoose = require("mongoose");
-const { type } = require("os");
+
 const commentSchema = new mongoose.Schema(
   {
     content: {
