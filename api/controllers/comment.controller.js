@@ -101,10 +101,81 @@ const deleteComment = async (req, res, next) => {
     return next(error);
   }
 };
+const getAllComments = async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    return next(errorHandler(405, "You are not allowed to see all comments"));
+  }
+
+  const startIndex = parseInt(req.query.startIndex) || 0;
+  const limit = parseInt(req.query.limit) || 10;
+  const sortDirection = req.query.sort === "desc" ? "-1" : "1";
+
+  try {
+    const comments = await Comment.aggregate([
+      {
+        $addFields: {
+          userIdObj: { $toObjectId: "$userId" },
+          postIdObj: { $toObjectId: "$postId" },
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "userIdObj",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $lookup: {
+          from: "posts",
+          localField: "postIdObj",
+          foreignField: "_id",
+          as: "post",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+      {
+        $unwind: "$post",
+      },
+      {
+        $project: {
+          content: 1,
+          createdAt: 1,
+          UpdatedAt: 1,
+          numberOfLikes: 1,
+          "user.email": 1,
+          "post.title": 1,
+        },
+      },
+    ])
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+
+    const totalComments = await Comment.countDocuments();
+    const now = new Date();
+    const oneMonthAgo = new Date(
+      now.getFullYear(),
+      now.getMonth() - 1,
+      now.getDate()
+    );
+
+    const lastMonthComments = await Comment.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+    res.status(200).json({ comments, totalComments, lastMonthComments });
+  } catch (error) {
+    console.error("Error fetching comments:", error);
+  }
+};
 module.exports = {
   addComment,
   getComments,
   addLike,
   editComment,
   deleteComment,
+  getAllComments,
 };

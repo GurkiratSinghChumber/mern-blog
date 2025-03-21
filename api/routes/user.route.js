@@ -14,12 +14,12 @@ const router = express.Router();
 
 router.get("/test", verifyToken, test);
 
+router.get("/users", verifyToken, getUsers);
 router.get("/:userId", getUser);
 
 router.put("/update/:userId", verifyToken, updateUser);
 router.delete("/delete/:userId", verifyToken, deleteUser);
 router.post("/sign-out", signOut);
-router.get("/users", verifyToken, getUsers);
 router.delete(
   "/deleteUser/:userDeleteId/:AdminId",
   verifyToken,

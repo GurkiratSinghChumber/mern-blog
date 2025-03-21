@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import DashComments from "../components/DashComments";
 import DashPost from "../components/DashPost";
 import DashProfile from "../components/DashProfile";
 import DashSidebar from "../components/DashSidebar";
 
-import { handleSignOut } from "../utils/SignOutFunction";
 import DashUsers from "../components/DashUsers";
+import { handleSignOut } from "../utils/SignOutFunction";
 
 export default function Dashboard() {
   const location = useLocation();
@@ -33,6 +34,8 @@ export default function Dashboard() {
       {tab === "post" && <DashPost></DashPost>}
 
       {tab == "users" && <DashUsers></DashUsers>}
+
+      {tab == "comments" && <DashComments></DashComments>}
     </div>
   );
 }
